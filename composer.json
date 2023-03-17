@@ -1,0 +1,27 @@
+{
+    "name": "visuellverstehen/t3languageredirection",
+    "type": "typo3-cms-extension",
+    "description": "This TYPO3 package provides a middleware that automatically redirects users to the preferred language URL based on their browser's Accept-Language header.",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "visuellverstehen",
+            "email": "kontakt@visuellverstehen.de",
+            "homepage": "https://www.visuellverstehen.de"
+        }
+    ],
+    "require": {
+        "typo3/cms-core": "8.7 - 11.5",
+        "php": "^7.1 || ^8.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "VV\\T3languageredirection\\": "Classes/"
+        }
+    },
+    "extra": {
+        "typo3/cms": {
+            "extension-key": "t3languageredirection"
+        }
+    }
+}
