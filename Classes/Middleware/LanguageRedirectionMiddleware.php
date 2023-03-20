@@ -27,7 +27,7 @@ class LanguageRedirectionMiddleware implements MiddlewareInterface
         $requestedLanguageIsoCode = $request->getAttribute('language')->getTwoLetterIsoCode();
 
         // Check if the requested URL matches the browser language
-        if ($requestedLanguageIsoCode === $browserLanguageIsoCode) {
+        if ($requestedLanguageIsoCode === $browserLanguageIsoCode || $requestedLanguageIsoCode) {
             return $handler->handle($request);
         }
 
