@@ -35,7 +35,7 @@ class LanguageRedirectMiddleware implements MiddlewareInterface
             // // Check if the browser language is supported
             if ($browserLanguage === $siteLanguage->getTwoLetterIsoCode()) {
                 // Redirect the user to the preferred language URL
-                $redirectUrl = $request->getAttribute('site')->getBase()->getPath() . $browserLanguage;
+                $redirectUrl = $request->getAttribute('site')->getBase()->getPath() . $browserLanguage . $request->getUri()->getPath();
                 return new RedirectResponse($redirectUrl);
             }
         }
