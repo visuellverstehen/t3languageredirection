@@ -21,7 +21,7 @@ class LanguageRedirectionMiddleware implements MiddlewareInterface
         }
 
         // Get the browser language from the HTTP request headers
-        $browserLanguageIsoCode = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
+        $browserLanguageIsoCode = substr($request->getHeaderLine('Accept-Language'), 0, 2);
 
         // Retrieve the language attribute via the request object
         $requestedLanguageIsoCode = $request->getAttribute('language')->getTwoLetterIsoCode();
