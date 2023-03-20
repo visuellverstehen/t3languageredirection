@@ -12,10 +12,10 @@ class LanguageRedirectionMiddleware implements MiddlewareInterface
 {
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        // Get site's languages
+        // Get the website's configured languages
         $siteLanguages = $request->getAttribute('site')->getLanguages();
 
-        // Check if the site has only one language
+        // Do nothing, if the website has only one configured language
         if (count($siteLanguages) === 1) {
             return $handler->handle($request);
         }
