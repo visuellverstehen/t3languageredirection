@@ -18,7 +18,7 @@ class LanguageRedirectionMiddleware implements MiddlewareInterface
         }
 
         // Do nothing, if a HTTP referer is set
-        if ($request->getServerParams()['HTTP_REFERER'] !== '') {
+        if (! empty($request->getServerParams()['HTTP_REFERER'])) {
             return $handler->handle($request);
         }
 
