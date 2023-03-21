@@ -32,7 +32,7 @@ class LanguageRedirectionMiddleware implements MiddlewareInterface
             return $handler->handle($request);
         }
 
-        // Get the is code of the browser language from HTTP request header
+        // Get the code of the browser language from HTTP request header
         $browserLanguageIsoCode = substr($requestParameters->getHttpAcceptLanguage(), 0, 2);
 
         foreach ($siteLanguages as $siteLanguage) {
