@@ -28,15 +28,11 @@ class LanguageRedirectionMiddleware implements MiddlewareInterface
         // Get the browser language from the HTTP request headers
         $browserLanguageIsoCode = substr($request->getHeaderLine('Accept-Language'), 0, 2);
 
-        // Get site root URL
-        $siteRootUrl = $request->getAttribute('site')->getBase()->getPath();
-
         foreach ($siteLanguages as $siteLanguage) {
             // Check if the browser language is supported
             if ($browserLanguageIsoCode === $siteLanguage->getTwoLetterIsoCode()) {
-                // Redirect the user to the preferred language URL
-                $redirectUrl = $siteRootUrl . $browserLanguageIsoCode;
-                return new RedirectResponse($redirectUrl);
+                // Redirect the user to the preferred language base URL
+                return new RedirectResponse($siteLanguage->getBase());
             }
         }
 
