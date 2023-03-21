@@ -30,11 +30,11 @@ class LanguageRedirectionMiddleware implements MiddlewareInterface
             return $handler->handle($request);
         }
 
-        // Get the code of the browser language from HTTP request header
+        // Get the iso code of the browser language from HTTP request header
         $browserLanguageIsoCode = substr($request->getServerParams()['HTTP_ACCEPT_LANGUAGE'], 0, 2);
 
         foreach ($siteLanguages as $siteLanguage) {
-            // Check if the browser language is supported by comparing two leter iso codes
+            // Check if the browser language is supported by comparing two letter iso codes
             if ($browserLanguageIsoCode === $siteLanguage->getTwoLetterIsoCode()) {
                 // Do nothing, if the site language base URL is the currently requested URL
                 if ((string) $siteLanguage->getBase() === $request->getAttribute('normalizedParams')->getRequestUrl()) {
