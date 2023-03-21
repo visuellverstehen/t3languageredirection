@@ -2,7 +2,7 @@
 
 $EM_CONF[$_EXTKEY] = [
     'title' => 't3languageredirection',
-    'description' => "This TYPO3 package provides a middleware that automatically redirects users to the preferred language URL based on their browser's Accept-Language header.",
+    'description' => 'This TYPO3 package provides a middleware that automatically redirects users to the preferred language URL based on their browser\'s Accept-Language header.',
     'category' => 'be',
     'author' => 'visuellverstehen',
     'author_email' => 'hello@visuellverstehen.de',
