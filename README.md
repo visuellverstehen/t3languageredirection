@@ -1,14 +1,6 @@
 # t3languageredirection
 A simple middleware language redirect which automatically redirects users to the preferred language URL based on their browser's Accept-Language header.
 
-
-## Requirements
-
-`TYPO3` 9.5 and higher
-
-`PHP` 7.2 and higher
-
-
 ## How to use
 
 You can easily install this extension using Composer:
