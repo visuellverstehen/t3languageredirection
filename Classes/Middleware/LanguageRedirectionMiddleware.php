@@ -12,6 +12,11 @@ class LanguageRedirectionMiddleware implements MiddlewareInterface
 {
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
+        // Do nothing, if the requested URL is not the root URL
+        if ($request->getServerParams()['REQUEST_URI'] !== '/') {
+            return $handler->handle($request);
+        }
+
         // Get the website's configured languages
         $siteLanguages = $request->getAttribute('site')->getLanguages();
 
@@ -22,11 +27,6 @@ class LanguageRedirectionMiddleware implements MiddlewareInterface
 
         // Get the browser language from the HTTP request headers
         $browserLanguageIsoCode = substr($request->getHeaderLine('Accept-Language'), 0, 2);
-
-        // Do nothing if the requested URL is not a base URL
-        if ($request->getServerParams()['REQUEST_URI'] !== '/') {
-            return $handler->handle($request);
-        }
 
         foreach ($siteLanguages as $siteLanguage) {
             // Check if the browser language is supported
