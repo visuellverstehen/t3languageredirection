@@ -2,7 +2,7 @@
 
 return [
     'frontend' => [
-        'middleware-identifier' => [
+        'language-redirection' => [
             'target' => \VV\T3languageredirection\Middleware\LanguageRedirectionMiddleware::class,
         ],
     ],
