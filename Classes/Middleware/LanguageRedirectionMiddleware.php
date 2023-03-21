@@ -31,13 +31,17 @@ class LanguageRedirectionMiddleware implements MiddlewareInterface
             return $handler->handle($request);
         }
 
-        foreach ($siteLanguages as $siteLanguage) {
-            // Check if the browser language is supported
-            if ($browserLanguageIsoCode === $siteLanguage->getTwoLetterIsoCode()) {
-                // Redirect the user to the preferred language URL
-                $redirectUrl = $request->getAttribute('site')->getBase()->getPath() . $browserLanguageIsoCode . $request->getUri()->getPath();
-                return new RedirectResponse($redirectUrl);
+        if ($request->getServerParams()['REQUEST_URI'] === '/') {
+            foreach ($siteLanguages as $siteLanguage) {
+                // Check if the browser language is supported
+                if ($browserLanguageIsoCode === $siteLanguage->getTwoLetterIsoCode()) {
+                    // Redirect the user to the preferred language URL
+                    $redirectUrl = $request->getAttribute('site')->getBase()->getPath() . $browserLanguageIsoCode;
+                    return new RedirectResponse($redirectUrl);
+                }
             }
         }
+
+        return $handler->handle($request);
     }
 }
