@@ -12,15 +12,13 @@ class LanguageRedirectionMiddleware implements MiddlewareInterface
 {
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $requestParameters = $request->getAttribute('normalizedParams');
-
         // Do nothing, if the requested URL is not the root URL
-        if ($requestParameters->getRequestUri() !== '/') {
+        if ($request->getAttribute('normalizedParams')->getRequestUri() !== '/') {
             return $handler->handle($request);
         }
 
         // Do nothing, if a HTTP referer is set
-        if ($requestParameters->getHttpReferer() !== '') {
+        if ($request->getServerParams()['HTTP_REFERER'] !== '') {
             return $handler->handle($request);
         }
 
@@ -33,13 +31,13 @@ class LanguageRedirectionMiddleware implements MiddlewareInterface
         }
 
         // Get the code of the browser language from HTTP request header
-        $browserLanguageIsoCode = substr($requestParameters->getHttpAcceptLanguage(), 0, 2);
+        $browserLanguageIsoCode = substr($request->getServerParams()['HTTP_ACCEPT_LANGUAGE'], 0, 2);
 
         foreach ($siteLanguages as $siteLanguage) {
             // Check if the browser language is supported by comparing two leter iso codes
             if ($browserLanguageIsoCode === $siteLanguage->getTwoLetterIsoCode()) {
                 // Do nothing, if the site language base URL is the currently requested URL
-                if ((string) $siteLanguage->getBase() === $requestParameters->getRequestUrl()) {
+                if ((string) $siteLanguage->getBase() === $request->getAttribute('normalizedParams')->getRequestUrl()) {
                     return $handler->handle($request);
                 }
 
