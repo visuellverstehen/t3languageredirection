@@ -50,8 +50,7 @@ class LanguageRedirectionMiddleware implements MiddlewareInterface
         return $handler->handle($request);
     }
 
-    // This function takes in an Accept-Language header string and returns an array of unique two-letter ISO codes
-    protected function getBrowserLangugeIsoCodes($acceptLanguageHeader)
+    protected function getBrowserLangugeIsoCodes(string $acceptLanguageHeader): array
     {
         $acceptedLanguages = preg_split("/\,/", $acceptLanguageHeader);
         foreach ($acceptedLanguages as $acceptedLanguage) {
