@@ -33,7 +33,7 @@ class LanguageRedirectionMiddleware implements MiddlewareInterface
         // Get the iso codes of the browser languages from HTTP request header
         $browserLanguageIsoCodes = $this->getBrowserLangugeIsoCodes($request->getServerParams()['HTTP_ACCEPT_LANGUAGE']);
 
-        // Check which of the browser language is supported by comparing two letter iso codes
+        // Check which of the browser languages are supported by comparing two letter iso codes
         foreach ($browserLanguageIsoCodes as $browserLanguageIsoCode) {
             foreach ($siteLanguages as $siteLanguage) {
                 if ($browserLanguageIsoCode === $siteLanguage->getTwoLetterIsoCode()) {
