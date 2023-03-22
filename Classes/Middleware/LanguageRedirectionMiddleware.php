@@ -30,22 +30,32 @@ class LanguageRedirectionMiddleware implements MiddlewareInterface
             return $handler->handle($request);
         }
 
-        // Get the iso code of the browser language from HTTP request header
-        $browserLanguageIsoCode = substr($request->getServerParams()['HTTP_ACCEPT_LANGUAGE'], 0, 2);
+        // Get the ISO codes of the browser languages from HTTP request header
+        $browserLanguageIsoCodes = $this->getBrowserLangugeIsoCodes($request->getServerParams()['HTTP_ACCEPT_LANGUAGE']);
 
-        foreach ($siteLanguages as $siteLanguage) {
-            // Check if the browser language is supported by comparing two letter iso codes
-            if ($browserLanguageIsoCode === $siteLanguage->getTwoLetterIsoCode()) {
-                // Do nothing, if the site language base URL is the currently requested URL
-                if ((string) $siteLanguage->getBase() === $request->getAttribute('normalizedParams')->getRequestUrl()) {
-                    return $handler->handle($request);
+        // Check which of the browser languages are supported by comparing two letter ISO codes
+        foreach ($browserLanguageIsoCodes as $browserLanguageIsoCode) {
+            foreach ($siteLanguages as $siteLanguage) {
+                if ($browserLanguageIsoCode === $siteLanguage->getTwoLetterIsoCode()) {
+                    // Do nothing, if the site language base URL is the currently requested URL
+                    if ((string) $siteLanguage->getBase() === $request->getAttribute('normalizedParams')->getRequestUrl()) {
+                        return $handler->handle($request);
+                    }
+                    // Redirect the user to the preferred language base URL
+                    return new RedirectResponse($siteLanguage->getBase());
                 }
-
-                // Redirect the user to the preferred language base URL
-                return new RedirectResponse($siteLanguage->getBase());
             }
         }
 
         return $handler->handle($request);
+    }
+
+    protected function getBrowserLangugeIsoCodes(string $acceptLanguageHeader): array
+    {
+        $acceptedLanguages = preg_split("/\,/", $acceptLanguageHeader);
+        foreach ($acceptedLanguages as $acceptedLanguage) {
+            $acceptedLanguageIsoCodes[] = substr($acceptedLanguage, 0, 2);
+        }
+        return array_unique($acceptedLanguageIsoCodes);
     }
 }
