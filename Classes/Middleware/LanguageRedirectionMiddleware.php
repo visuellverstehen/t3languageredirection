@@ -12,11 +12,6 @@ class LanguageRedirectionMiddleware implements MiddlewareInterface
 {
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        // Do nothing, if the requested URL is not the root URL
-        if ($request->getAttribute('normalizedParams')->getRequestUri() !== '/') {
-            return $handler->handle($request);
-        }
-
         // Do nothing, if a HTTP referer is set
         if (! empty($request->getServerParams()['HTTP_REFERER'])) {
             return $handler->handle($request);
@@ -27,6 +22,17 @@ class LanguageRedirectionMiddleware implements MiddlewareInterface
 
         // Do nothing, if the website has only one configured site language
         if (count($siteLanguages) === 1) {
+            return $handler->handle($request);
+        }
+
+        // Get base URL from site configuration
+        $baseUrl = (string) array_filter($siteLanguages, function($siteLanguage) {
+            return $siteLanguage->getLanguageId() === 0;
+        })[0]->getBase();
+
+
+        // Do nothing, if the requested URL is not the base URL
+        if ($request->getAttribute('normalizedParams')->getRequestUrl() !== $baseUrl) {
             return $handler->handle($request);
         }
 
