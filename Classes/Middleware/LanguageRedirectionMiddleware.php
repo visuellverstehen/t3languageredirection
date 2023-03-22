@@ -31,11 +31,11 @@ class LanguageRedirectionMiddleware implements MiddlewareInterface
         }
 
         // Get the iso code of the browser language from HTTP request header
-        $browserLanguageIsoCode = substr($request->getServerParams()['HTTP_ACCEPT_LANGUAGE'], 0, 2);
+        $browserLanguageIsoCodes = $this->getBrowserLangugeIsoCodes($request->getServerParams()['HTTP_ACCEPT_LANGUAGE']);
 
         foreach ($siteLanguages as $siteLanguage) {
             // Check if the browser language is supported by comparing two letter iso codes
-            if ($browserLanguageIsoCode === $siteLanguage->getTwoLetterIsoCode()) {
+            if ($browserLanguageIsoCodes === $siteLanguage->getTwoLetterIsoCode()) {
                 // Do nothing, if the site language base URL is the currently requested URL
                 if ((string) $siteLanguage->getBase() === $request->getAttribute('normalizedParams')->getRequestUrl()) {
                     return $handler->handle($request);
@@ -47,5 +47,15 @@ class LanguageRedirectionMiddleware implements MiddlewareInterface
         }
 
         return $handler->handle($request);
+    }
+
+    protected function getBrowserLangugeIsoCodes($acceptLanguageHeader)
+    {
+        $acceptedLanguages = preg_split("/\,/", $acceptLanguageHeader);
+        foreach ($acceptedLanguages as $acceptedLanguage) {
+            $acceptedLanguageIsoCodes[] = substr($acceptedLanguage, 0, 2);
+        }
+        $acceptedLanguageIsoCodes = array_unique($acceptedLanguageIsoCodes);
+        return $acceptedLanguageIsoCodes;
     }
 }
