@@ -55,7 +55,6 @@ class LanguageRedirectionMiddleware implements MiddlewareInterface
         foreach ($acceptedLanguages as $acceptedLanguage) {
             $acceptedLanguageIsoCodes[] = substr($acceptedLanguage, 0, 2);
         }
-        $acceptedLanguageIsoCodes = array_unique($acceptedLanguageIsoCodes);
-        return $acceptedLanguageIsoCodes;
+        return array_unique($acceptedLanguageIsoCodes);
     }
 }
