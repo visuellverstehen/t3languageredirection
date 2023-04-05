@@ -37,7 +37,7 @@ class LanguageRedirectionMiddleware implements MiddlewareInterface
         }
 
         // Do nothing, if accept language header is not set
-        if (! isset($request->getServerParams()['HTTP_ACCEPT_LANGUAGE'])) {
+        if (empty($request->getServerParams()['HTTP_ACCEPT_LANGUAGE'])) {
             return $handler->handle($request);
         }
 
