@@ -36,6 +36,11 @@ class LanguageRedirectionMiddleware implements MiddlewareInterface
             return $handler->handle($request);
         }
 
+        // Do nothing, if request header is not set
+        if (! isset($request->getServerParams()['HTTP_ACCEPT_LANGUAGE'])) {
+            return $handler->handle($request);
+        }
+
         // Get the ISO codes of the browser languages from HTTP request header
         $browserLanguageIsoCodes = $this->getBrowserLangugeIsoCodes($request->getServerParams()['HTTP_ACCEPT_LANGUAGE']);
 
