@@ -12,8 +12,13 @@ class LanguageRedirectionMiddleware implements MiddlewareInterface
 {
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        // Do nothing, if a HTTP referer is set
+        // Do nothing, if HTTP referer header is set
         if (! empty($request->getServerParams()['HTTP_REFERER'])) {
+            return $handler->handle($request);
+        }
+
+        // Do nothing, if HTTP accept language header is not set
+        if (empty($request->getServerParams()['HTTP_ACCEPT_LANGUAGE'])) {
             return $handler->handle($request);
         }
 
@@ -33,11 +38,6 @@ class LanguageRedirectionMiddleware implements MiddlewareInterface
 
         // Do nothing, if the requested URL is not the base URL
         if ($request->getAttribute('normalizedParams')->getRequestUrl() !== $baseUrl) {
-            return $handler->handle($request);
-        }
-
-        // Do nothing, if accept language header is not set
-        if (empty($request->getServerParams()['HTTP_ACCEPT_LANGUAGE'])) {
             return $handler->handle($request);
         }
 
